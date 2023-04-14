@@ -1,6 +1,3 @@
-
- var socket;
-
 let data = [];
 let systems = [];
 
@@ -17,64 +14,8 @@ let xFungi;
 let yFungi;
 let imageArray;
 let currentImage = 0;
-
-
 function setup() {
   createCanvas(1920 * 2, 1080);
-
-  //socket = socket.io.connect('http://localhost:3000');
-  socket = io.connect("https://dda-miflck.herokuapp.com/");
-
-
-    // Callback function
-    socket.on("message", (data) => {
-      console.log("callback from server", data);
-      switch(data){
-        case 1:
-          currentImage = 1;
-          break;
-      }
-      switch(data){
-        case 2:
-          currentImage = 2;
-          break;
-      }
-      switch(data){
-        case 3:
-          currentImage = 3;
-          break;
-      }
-      switch(data){
-        case 4:
-          currentImage = 4;
-          break;
-      }
-      switch(data){
-        case 5:
-          currentImage = 5;
-          break;
-      }
-      switch(data){
-        case 6:
-          currentImage = 6;
-          break;
-      }
-      switch(data){
-        case 7:
-          currentImage = 7;
-          break;
-      }
-      switch(data){
-        case 8:
-          currentImage = 8;
-          break;
-      }
-    });
-  
-    // gets called when new client arrives
-    socket.on("client connected", (data) => {
-      console.log("client added", data);
-    });
 
   wald = loadImage("M/Wald_Bild.png");
   m1 = loadImage("M/M1.png");
@@ -90,8 +31,11 @@ function setup() {
 
   d3.csv("Matrix97.csv", d3.autoType).then((csv, error) => {
     data = csv;
+    //console.log(data);
 
-
+    // data.sort(function(a,b){
+    //   return d3.ascending(a.FungiNumber,b.FungiNumber)
+    // })
 
     let plant = data.map(function (d) {
       return d.Plant;
@@ -127,14 +71,7 @@ function setup() {
     cScale = d3
       .scaleOrdinal()
       .domain(modules)
-      .range(["#717bc1",
-      "#979446",
-      "#ae66b1",
-      "#59a270",
-      "#bf637d",
-      "#74b3c9",
-      "#bc764f",
-      "#4c707b"]);
+      .range(["#76A643", "#43A68B", "#A68743"]);
     colScale = d3
       .scaleSequential()
       .domain(modules)
@@ -144,19 +81,22 @@ function setup() {
       let plant = data[i].Plant;
       let fungi = data[i].Fungi;
       let functions = data[i].Function;
-      let modules = data[i].Module;
+      // CS
+      let module = data[i].Module
+
 
       let xPlant = yScalePlant(plant);
       yFungi = random(50, height - 50);
       xFungi = random(50, 1920 - 50);
       //let yFungi = yScaleFungi(fungi);
       let s = data[i].Connection * 0.5;
-      let c = cScale(modules);
+      let c = cScale(module);
 
       v1 = createVector(xPlant, height / 2);
       v2 = createVector(xFungi, yFungi);
 
-      let ps = new ParticleSystem(v1, v2, s, c);
+      // CS
+      let ps = new ParticleSystem(v1, v2, s, c, module);
 
       systems.push(ps);
     }
@@ -170,7 +110,7 @@ function draw() {
 
   for (let i = 0; i < data.length; i++) {
     if (data[i].Module == currentImage) {
-      let n = 10;
+      let n = 0;
       if (data[i].Function == "AM") {
         n = 10;
       }
@@ -187,7 +127,10 @@ function draw() {
   }
 
   for (let i = 0; i < systems.length; i++) {
-    systems[i].run();
+    // CS particle system nur aktiv wenn module gleich currentImage
+    if(systems[i].module == currentImage){
+      systems[i].run();
+    }
   }
 
   for (let i = 0; i < data.length; i++) {
@@ -198,24 +141,68 @@ function draw() {
 
     let xPlant = yScalePlant(plant);
     //let yFungi = yScaleFungi(fungi);
-    let c = cScale(modules);
+    let c = cScale(functions);
     let col = colScale(modules);
 
     noStroke();
-    fill(c);
+    fill(255);
     ellipse(xPlant, height / 2, 5);
   }
 
   image(imageArray[currentImage], 1920, 0);
 }
 
+function keyPressed() {
+
+  if (key == "s") {
+    saveCanvas("fungi", "png");
+  }
+  if (key == "1") {
+    background(4, 47, 16) // CS
+    currentImage = 1;
+  }
+  if (key == "2") {
+    background(4, 47, 16) // CS
+    currentImage = 2;
+  }
+  if (key == "3") {
+    background(4, 47, 16) // CS
+    currentImage = 3;
+  }
+  if (key == "4") {
+    background(4, 47, 16) // CS
+    currentImage = 4;
+  }
+  if (key == "5") {
+    background(4, 47, 16) // CS
+    currentImage = 5;
+  }
+  if (key == "6") {
+    background(4, 47, 16) // CS
+    currentImage = 6;
+  }
+  if (key == "7") {
+    background(4, 47, 16) // CS
+    currentImage = 7;
+  }
+  if (key == "8") {
+    background(4, 47, 16) // CS
+    currentImage = 8;
+  }
+}
+
 class ParticleSystem {
-  constructor(v1, v2, s, c) {
+  constructor(v1, v2, s, c, m) {
     this.start = v2;
     this.end = v1;
     this.particles = [];
     this.stroke = s;
     this.color = c;
+
+    // CS indem jedes Particlesystem weiss zu welchem Modul es gehört
+    // kann man es ein und ausschalten
+    // je nachdem welches Modul gerade angezeigt werden soll
+    this.module = m;
   }
 
   addParticle() {
@@ -296,9 +283,3 @@ class Particle {
     return this.pos.x < 0;
   }
 }
-
-function keyPressed() {
-  if (key == "s") {
-    saveCanvas("fungi", "png");
-  }
- }
