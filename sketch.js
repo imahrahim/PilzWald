@@ -19,8 +19,9 @@ let imageArray;
 let currentImage = 0;
 
 
+
 function setup() {
-  createCanvas(1920 * 2, 1080);
+  createCanvas(1920 , 1080);
 
   //socket = socket.io.connect('http://localhost:3000');
   socket = io.connect("https://dda-miflck.herokuapp.com/");
@@ -84,22 +85,9 @@ function setup() {
       console.log("client added", data);
     });
 
-  wald = loadImage("M/Wald_Bild.png");
-  m1 = loadImage("M/M1.png");
-  m2 = loadImage("M/M2.png");
-  m3 = loadImage("M/M3.png");
-  m4 = loadImage("M/M4.png");
-  m5 = loadImage("M/M5.png");
-  m6 = loadImage("M/M6.png");
-  m7 = loadImage("M/M7.png");
-  m8 = loadImage("M/M8.png");
-
-  imageArray = [wald, m1, m2, m3, m4, m5, m6, m7, m8];
 
   d3.csv("Matrix97.csv", d3.autoType).then((csv, error) => {
     data = csv;
-
-
 
     let plant = data.map(function (d) {
       return d.Plant;
@@ -119,7 +107,7 @@ function setup() {
 
     let plants = _.uniq(plant);
     let fungis = _.uniq(fungi);
-    let modules = _.uniq(module);
+    modules = _.uniq(module);
     let functions = _.uniq(fun);
 
     console.log(plants);
@@ -158,7 +146,8 @@ function setup() {
       yFungi = random(50, height - 50);
       xFungi = random(50, 1920 - 50);
       //let yFungi = yScaleFungi(fungi);
-      let s = data[i].Connection * 0.5;
+      //let s = data[i].Connection * 0.5;
+      let s = 0.8;
       let c = cScale(modules);
 
       v1 = createVector(xPlant, height / 2);
@@ -187,7 +176,7 @@ function draw() {
       }
       if (data[i].Function == "EcM") {
         n = 1;
-      }
+      } 
       if (frameCount % n == 0) {
         systems[i].addParticle();
       }
@@ -215,9 +204,8 @@ function draw() {
     fill(c);
     ellipse(xPlant, height / 2, 5);
   }
-
-  image(imageArray[currentImage], 1920, 0);
 }
+
 
 class ParticleSystem {
   constructor(v1, v2, s, c, modules) {
@@ -230,19 +218,14 @@ class ParticleSystem {
   }
 
   addParticle() {
-    let p = new Particle(this.end, this.start, this.stroke, this.color);
+    let p = new Particle(this.end, this.start, this.stroke, this.color,this.module);
     this.particles.push(p);
 
     fill(this.color);
     ellipse(this.start.x, this.start.y, 3);
 
-    // if (frameCount % n == 0) {
-    //   let p = new Particle(this.end, this.start, this.stroke, this.color);
-    //   this.particles.push(p);
-    // }
   }
   run() {
-
     for (let i = 0; i < this.particles.length; i++) {
       let p = this.particles[i];
       p.update();
@@ -256,7 +239,7 @@ class ParticleSystem {
 }
 
 class Particle {
-  constructor(v1, v2, s, c) {
+  constructor(v1, v2, s, c,modules) {
     this.start = v2;
     this.end = v1;
     this.maxSpeed = 1;
@@ -273,6 +256,7 @@ class Particle {
     this.n = 3;
     let distance = dist(this.start.x, this.start.y, this.end.x, this.end.y);
     this.weg = this.n / distance;
+    this.module = modules
 
     //console.log(this.weg);
   }
@@ -303,9 +287,10 @@ class Particle {
     noStroke();
     ellipse(this.pos.x, this.pos.y, this.stroke);
   }
+
   isDead() {
-    return this.pos.x < 0;
-  }
+    return  this.module !== currentImage;
+}
 }
 
 function keyPressed() {
