@@ -34,54 +34,97 @@ function setup() {
     socket.on("message", (data) => {
       console.log("callback from server", data);
       switch(data){
+        case 0:
+          background(4, 47, 16)
+          currentImage = 0;
+          for (let i = 0; i < systems.length; i++) {
+            if(systems[i].module == currentImage){
+              systems[i].deleteParticles();
+            }}
+          break;
+      }
+      switch(data){
         case 1:
           background(4, 47, 16)
           currentImage = 1;
+          for (let i = 0; i < systems.length; i++) {
+            if(systems[i].module == currentImage){
+              systems[i].deleteParticles();
+            }}
+          
           break;
       }
       switch(data){
         case 2:
           background(4, 47, 16)
           currentImage = 2;
+          for (let i = 0; i < systems.length; i++) {
+            if(systems[i].module == currentImage){
+              systems[i].deleteParticles();
+            }}
           break;
       }
       switch(data){
         case 3:
           background(4, 47, 16)
           currentImage = 3;
+          for (let i = 0; i < systems.length; i++) {
+            if(systems[i].module == currentImage){
+              systems[i].deleteParticles();
+            }}
           break;
       }
       switch(data){
         case 4:
           background(4, 47, 16)
           currentImage = 4;
+          for (let i = 0; i < systems.length; i++) {
+            if(systems[i].module == currentImage){
+              systems[i].deleteParticles();
+            }}
           break;
       }
       switch(data){
         case 5:
           background(4, 47, 16)
           currentImage = 5;
+          for (let i = 0; i < systems.length; i++) {
+            if(systems[i].module == currentImage){
+              systems[i].deleteParticles();
+            }}
           break;
       }
       switch(data){
         case 6:
           background(4, 47, 16)
           currentImage = 6;
+          for (let i = 0; i < systems.length; i++) {
+            if(systems[i].module == currentImage){
+              systems[i].deleteParticles();
+            }}
           break;
       }
       switch(data){
         case 7:
           background(4, 47, 16)
           currentImage = 7;
+          for (let i = 0; i < systems.length; i++) {
+            if(systems[i].module == currentImage){
+              systems[i].deleteParticles();
+            }}
           break;
       }
       switch(data){
         case 8:
           background(4, 47, 16)
           currentImage = 8;
+          for (let i = 0; i < systems.length; i++) {
+            if(systems[i].module == currentImage){
+              systems[i].deleteParticles();
+            }}
           break;
       }
-    });
+});
   
     // gets called when new client arrives
     socket.on("client connected", (data) => {
@@ -134,16 +177,15 @@ function setup() {
       .scaleOrdinal()
       .domain([1,2,3,4,5,6,7,8])
       .range([
-        "#F3E6FF", // Button 1
-        "#C2EFFF", // Button 2
-        "#C7FFE6", // Button 3
-        "#FFFCE6", // Button 4
-        "#FFDBBF", // Button 5
-        "#FFBFBF", // Button 6
-        "#E6BFFF", // Button 7
-        "#BFD9FF"  // Button 8
-      ]
-      );
+        "#E8C9FF", // Button 1
+        "#8DD8FF", // Button 2
+        "#7FFF99", // Button 3 (more green)
+        "#FFEE80", // Button 4 (more yellow)
+        "#FFB073", // Button 5
+        "#FF7373", // Button 6
+        "#D86AFF", // Button 7
+        "#73B2FF" // Button 8
+        ] );
     
 
       strokeScale.domain([minS,maxS]).range([2,10]);
@@ -189,7 +231,7 @@ function generateRandomY(){
 }
 
 function draw() {
-  background(0, 20);
+  background(0,20);
 
   for (let i = 0; i < data.length; i++) {
     if (data[i].Module == currentImage) {
@@ -204,7 +246,8 @@ function draw() {
         n = 1;
       } 
       if (frameCount % n == 0) {
-        systems[i].addParticle();
+       // systems[i].addParticle();
+       systems[i].addParticle();
       }
     }
   }
@@ -226,9 +269,14 @@ function draw() {
     let c = cScale(modules);
     let col = colScale(modules);
 
-    noStroke();
-    fill(255);
-    ellipse(xPlant, yPlant,5);
+    stroke(255);
+    noFill();
+    ellipse(xPlant, yPlant,1);
+
+    if (modules == currentImage) {
+      fill(255);
+      ellipse(xPlant, yPlant,10);
+    }
   }
 }
 
@@ -243,11 +291,16 @@ class ParticleSystem {
     this.module = modules
   }
 
+
+deleteParticles(){
+  this.particles=[]
+}
+
   addParticle() {
     let p = new Particle(this.end, this.start, this.stroke, this.color,this.module);
     this.particles.push(p);
 
-    fill(255);
+    fill(this.color);
     ellipse(this.start.x, this.start.y, 3);
 
   }
