@@ -9,10 +9,12 @@ let yScaleFungi = d3.scalePoint();
 let vScaleConnection = d3.scaleSqrt();
 let cScale = d3.scaleOrdinal();
 let colScale = d3.scaleSequential();
+let strokeScale = d3.scaleSqrt();
 
 let v1;
 let v2;
 
+let yPlant
 let xFungi;
 let yFungi;
 let imageArray;
@@ -22,6 +24,7 @@ let currentImage = 0;
 
 function setup() {
   createCanvas(1920 , 1080);
+  select('canvas').style('border', 'none');
 
   //socket = socket.io.connect('http://localhost:3000');
   socket = io.connect("https://dda-miflck.herokuapp.com/");
@@ -105,6 +108,13 @@ function setup() {
       return d.Function;
     });
 
+    let connection = data.map(function (d){
+      return d.Connection;
+    })
+
+    minS = d3.min(connection);
+    maxS = d3.max(connection);
+
     let plants = _.uniq(plant);
     let fungis = _.uniq(fungi);
     modules = _.uniq(module);
@@ -122,19 +132,22 @@ function setup() {
     yScaleFungi = d3.scalePoint().domain(fungis).range([20, 780]);
     cScale = d3
       .scaleOrdinal()
-      .domain(modules)
-      .range(["#717bc1",
-      "#979446",
-      "#ae66b1",
-      "#59a270",
-      "#bf637d",
-      "#74b3c9",
-      "#bc764f",
-      "#4c707b"]);
-    colScale = d3
-      .scaleSequential()
-      .domain(modules)
-      .interpolator(d3.interpolatePuBuGn);
+      .domain([1,2,3,4,5,6,7,8])
+      .range([
+        "#F3E6FF", // Button 1
+        "#C2EFFF", // Button 2
+        "#C7FFE6", // Button 3
+        "#FFFCE6", // Button 4
+        "#FFDBBF", // Button 5
+        "#FFBFBF", // Button 6
+        "#E6BFFF", // Button 7
+        "#BFD9FF"  // Button 8
+      ]
+      );
+    
+
+      strokeScale.domain([minS,maxS]).range([2,10]);
+
 
     for (let i = 0; i < data.length; i++) {
       let plant = data[i].Plant;
@@ -142,15 +155,20 @@ function setup() {
       let functions = data[i].Function;
       let modules = data[i].Module;
 
+
+
       let xPlant = yScalePlant(plant);
-      yFungi = random(50, height - 50);
+      yPlant = height/2;
+     // yFungi = constrain(random(50, height-50), height/2-50, height/2+50);
+     yFungi = generateRandomY();
       xFungi = random(50, 1920 - 50);
       //let yFungi = yScaleFungi(fungi);
-      //let s = data[i].Connection * 0.5;
-      let s = 0.8;
+      //let s = data[i].Connection * 0.9;
+      let s = strokeScale(data[i].Connection);
       let c = cScale(modules);
+     
 
-      v1 = createVector(xPlant, height / 2);
+      v1 = createVector(xPlant, yPlant);
       v2 = createVector(xFungi, yFungi);
 
       let ps = new ParticleSystem(v1, v2, s, c, modules);
@@ -162,8 +180,16 @@ function setup() {
   noStroke();
 }
 
+function generateRandomY(){
+  yFungi = random(50,height-50);
+  if (yFungi > height/2-50 && yFungi < height/2+50) {
+    yFungi= generateRandomY(); // recursively generate another random y value
+  }
+  return yFungi;
+}
+
 function draw() {
-  background(4, 47, 16, 30);
+  background(0, 20);
 
   for (let i = 0; i < data.length; i++) {
     if (data[i].Module == currentImage) {
@@ -201,8 +227,8 @@ function draw() {
     let col = colScale(modules);
 
     noStroke();
-    fill(c);
-    ellipse(xPlant, height / 2, 5);
+    fill(255);
+    ellipse(xPlant, yPlant,5);
   }
 }
 
@@ -221,11 +247,15 @@ class ParticleSystem {
     let p = new Particle(this.end, this.start, this.stroke, this.color,this.module);
     this.particles.push(p);
 
-    fill(this.color);
+    fill(255);
     ellipse(this.start.x, this.start.y, 3);
 
   }
   run() {
+
+    fill(this.color);
+    ellipse(this.start.x, this.start.y, 3);
+
     for (let i = 0; i < this.particles.length; i++) {
       let p = this.particles[i];
       p.update();
@@ -284,6 +314,7 @@ class Particle {
 
   display() {
     fill(this.color);
+   
     noStroke();
     ellipse(this.pos.x, this.pos.y, this.stroke);
   }
