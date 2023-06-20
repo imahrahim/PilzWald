@@ -23,7 +23,7 @@ let currentImage = 0;
 
 
 function setup() {
-  createCanvas(1920 , 1080);
+  createCanvas(windowwidth, windowHeight);
   select('canvas').style('border', 'none');
 
   //socket = socket.io.connect('http://localhost:3000');
@@ -171,8 +171,8 @@ function setup() {
     yScalePlant = d3
       .scalePoint()
       .domain(plants)
-      .range([50, 1920 - 50]);
-    yScaleFungi = d3.scalePoint().domain(fungis).range([20, 780]);
+      .range([50, width - 50]);
+    yScaleFungi = d3.scalePoint().domain(fungis).range([20, height-20]);
     cScale = d3
       .scaleOrdinal()
       .domain([1,2,3,4,5,6,7,8])
@@ -203,7 +203,7 @@ function setup() {
       yPlant = height/2;
      // yFungi = constrain(random(50, height-50), height/2-50, height/2+50);
      yFungi = generateRandomY();
-      xFungi = random(50, 1920 - 50);
+      xFungi = random(50, width - 50);
       //let yFungi = yScaleFungi(fungi);
       //let s = data[i].Connection * 0.9;
       let s = strokeScale(data[i].Connection);
