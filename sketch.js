@@ -23,7 +23,7 @@ let currentImage = 0;
 
 
 function setup() {
-  createCanvas(windowwidth, windowHeight);
+  createCanvas(windowWidth , windowHeight);
   select('canvas').style('border', 'none');
 
   //socket = socket.io.connect('http://localhost:3000');
@@ -172,7 +172,7 @@ function setup() {
       .scalePoint()
       .domain(plants)
       .range([50, width - 50]);
-    yScaleFungi = d3.scalePoint().domain(fungis).range([20, height-20]);
+    yScaleFungi = d3.scalePoint().domain(fungis).range([20, 780]);
     cScale = d3
       .scaleOrdinal()
       .domain([1,2,3,4,5,6,7,8])
