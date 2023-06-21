@@ -1,5 +1,4 @@
-
- var socket;
+var socket;
 
 let data = [];
 let systems = [];
@@ -14,126 +13,153 @@ let strokeScale = d3.scaleSqrt();
 let v1;
 let v2;
 
-let yPlant
+let yPlant;
 let xFungi;
 let yFungi;
 let imageArray;
 let currentImage = 0;
 
-
-
 function setup() {
-  createCanvas(windowWidth , windowHeight);
-  select('canvas').style('border', 'none');
+  createCanvas(windowWidth, windowHeight);
+  select("canvas").style("border", "none");
 
   //socket = socket.io.connect('http://localhost:3000');
   socket = io.connect("https://dda-miflck.herokuapp.com/");
 
+  // Callback function
+  socket.on("message", (data) => {
+    console.log("callback from server", data);
+    switch (data) {
+      case 0:
+        background(4, 47, 16);
+        currentImage = 0;
+        for (let i = 0; i < systems.length; i++) {
+          if (systems[i].module == currentImage) {
+            systems[i].deleteParticles();
+          }
+        }
+        break;
+    }
+    switch (data) {
+      case 1:
+        background(4, 47, 16);
+        currentImage = 1;
+        for (let i = 0; i < systems.length; i++) {
+          if (systems[i].module == currentImage) {
+            systems[i].deleteParticles();
+          }
+        }
 
-    // Callback function
-    socket.on("message", (data) => {
-      console.log("callback from server", data);
-      switch(data){
-        case 0:
-          background(4, 47, 16)
-          currentImage = 0;
-          for (let i = 0; i < systems.length; i++) {
-            if(systems[i].module == currentImage){
-              systems[i].deleteParticles();
-            }}
-          break;
-      }
-      switch(data){
-        case 1:
-          background(4, 47, 16)
-          currentImage = 1;
-          for (let i = 0; i < systems.length; i++) {
-            if(systems[i].module == currentImage){
-              systems[i].deleteParticles();
-            }}
-          
-          break;
-      }
-      switch(data){
-        case 2:
-          background(4, 47, 16)
-          currentImage = 2;
-          for (let i = 0; i < systems.length; i++) {
-            if(systems[i].module == currentImage){
-              systems[i].deleteParticles();
-            }}
-          break;
-      }
-      switch(data){
-        case 3:
-          background(4, 47, 16)
-          currentImage = 3;
-          for (let i = 0; i < systems.length; i++) {
-            if(systems[i].module == currentImage){
-              systems[i].deleteParticles();
-            }}
-          break;
-      }
-      switch(data){
-        case 4:
-          background(4, 47, 16)
-          currentImage = 4;
-          for (let i = 0; i < systems.length; i++) {
-            if(systems[i].module == currentImage){
-              systems[i].deleteParticles();
-            }}
-          break;
-      }
-      switch(data){
-        case 5:
-          background(4, 47, 16)
-          currentImage = 5;
-          for (let i = 0; i < systems.length; i++) {
-            if(systems[i].module == currentImage){
-              systems[i].deleteParticles();
-            }}
-          break;
-      }
-      switch(data){
-        case 6:
-          background(4, 47, 16)
-          currentImage = 6;
-          for (let i = 0; i < systems.length; i++) {
-            if(systems[i].module == currentImage){
-              systems[i].deleteParticles();
-            }}
-          break;
-      }
-      switch(data){
-        case 7:
-          background(4, 47, 16)
-          currentImage = 7;
-          for (let i = 0; i < systems.length; i++) {
-            if(systems[i].module == currentImage){
-              systems[i].deleteParticles();
-            }}
-          break;
-      }
-      switch(data){
-        case 8:
-          background(4, 47, 16)
-          currentImage = 8;
-          for (let i = 0; i < systems.length; i++) {
-            if(systems[i].module == currentImage){
-              systems[i].deleteParticles();
-            }}
-          break;
-      }
-});
-  
-    // gets called when new client arrives
-    socket.on("client connected", (data) => {
-      console.log("client added", data);
-    });
+        break;
+    }
+    switch (data) {
+      case 2:
+        background(4, 47, 16);
+        currentImage = 2;
+        for (let i = 0; i < systems.length; i++) {
+          if (systems[i].module == currentImage) {
+            systems[i].deleteParticles();
+          }
+        }
+        break;
+    }
+    switch (data) {
+      case 3:
+        background(4, 47, 16);
+        currentImage = 3;
+        for (let i = 0; i < systems.length; i++) {
+          if (systems[i].module == currentImage) {
+            systems[i].deleteParticles();
+          }
+        }
+        break;
+    }
+    switch (data) {
+      case 4:
+        background(4, 47, 16);
+        currentImage = 4;
+        for (let i = 0; i < systems.length; i++) {
+          if (systems[i].module == currentImage) {
+            systems[i].deleteParticles();
+          }
+        }
+        break;
+    }
+    switch (data) {
+      case 5:
+        background(4, 47, 16);
+        currentImage = 5;
+        for (let i = 0; i < systems.length; i++) {
+          if (systems[i].module == currentImage) {
+            systems[i].deleteParticles();
+          }
+        }
+        break;
+    }
+    switch (data) {
+      case 6:
+        background(4, 47, 16);
+        currentImage = 6;
+        for (let i = 0; i < systems.length; i++) {
+          if (systems[i].module == currentImage) {
+            systems[i].deleteParticles();
+          }
+        }
+        break;
+    }
+    switch (data) {
+      case 7:
+        background(4, 47, 16);
+        currentImage = 7;
+        for (let i = 0; i < systems.length; i++) {
+          if (systems[i].module == currentImage) {
+            systems[i].deleteParticles();
+          }
+        }
+        break;
+    }
+    switch (data) {
+      case 8:
+        background(4, 47, 16);
+        currentImage = 8;
+        for (let i = 0; i < systems.length; i++) {
+          if (systems[i].module == currentImage) {
+            systems[i].deleteParticles();
+          }
+        }
+        break;
+    }
+  });
 
+  // gets called when new client arrives
+  socket.on("client connected", (data) => {
+    console.log("client added", data);
+  });
+  generateSystems();
+  noStroke();
+}
 
+function windowResized() {
+  resizeCanvas(windowWidth, windowHeight);
+  console.log("resize!", windowWidth, windowHeight);
+
+  generateSystems();
+}
+
+function generateRandomY() {
+  yFungi = random(50, windowHeight - 50);
+  if (yFungi > windowHeight / 2 - 50 && yFungi < height / 2 + 50) {
+    yFungi = generateRandomY(); // recursively generate another random y value
+  }
+  return yFungi;
+}
+
+function generateSystems() {
   d3.csv("Matrix97.csv", d3.autoType).then((csv, error) => {
+    systems = [];
+    data = [];
     data = csv;
+    console.log("data", data.length);
 
     let plant = data.map(function (d) {
       return d.Plant;
@@ -151,9 +177,9 @@ function setup() {
       return d.Function;
     });
 
-    let connection = data.map(function (d){
+    let connection = data.map(function (d) {
       return d.Connection;
-    })
+    });
 
     minS = d3.min(connection);
     maxS = d3.max(connection);
@@ -163,33 +189,31 @@ function setup() {
     modules = _.uniq(module);
     let functions = _.uniq(fun);
 
-    console.log(plants);
-    console.log(fungis);
-    console.log(modules);
-    console.log(functions);
+    //console.log(plants);
+    //console.log(fungis);
+    //console.log(modules);
+    //console.log(functions);
 
     yScalePlant = d3
       .scalePoint()
       .domain(plants)
-      .range([50, width - 50]);
-    yScaleFungi = d3.scalePoint().domain(fungis).range([20, 780]);
-    cScale = d3
-      .scaleOrdinal()
-      .domain([1,2,3,4,5,6,7,8])
-      .range([
-        "#E8C9FF", // Button 1
-        "#8DD8FF", // Button 2
-        "#7FFF99", // Button 3 (more green)
-        "#FFEE80", // Button 4 (more yellow)
-        "#FFB073", // Button 5
-        "#FF7373", // Button 6
-        "#D86AFF", // Button 7
-        "#73B2FF" // Button 8
-        ] );
-    
+      .range([50, windowWidth - 50]);
+    yScaleFungi = d3
+      .scalePoint()
+      .domain(fungis)
+      .range([20, windowHeight - 20]);
+    cScale = d3.scaleOrdinal().domain([1, 2, 3, 4, 5, 6, 7, 8]).range([
+      "#E8C9FF", // Button 1
+      "#8DD8FF", // Button 2
+      "#7FFF99", // Button 3 (more green)
+      "#FFEE80", // Button 4 (more yellow)
+      "#FFB073", // Button 5
+      "#FF7373", // Button 6
+      "#D86AFF", // Button 7
+      "#73B2FF", // Button 8
+    ]);
 
-      strokeScale.domain([minS,maxS]).range([2,10]);
-
+    strokeScale.domain([minS, maxS]).range([2, 10]);
 
     for (let i = 0; i < data.length; i++) {
       let plant = data[i].Plant;
@@ -197,18 +221,15 @@ function setup() {
       let functions = data[i].Function;
       let modules = data[i].Module;
 
-
-
       let xPlant = yScalePlant(plant);
-      yPlant = height/2;
-     // yFungi = constrain(random(50, height-50), height/2-50, height/2+50);
-     yFungi = generateRandomY();
-      xFungi = random(50, width - 50);
+      yPlant = windowHeight / 2;
+      // yFungi = constrain(random(50, height-50), height/2-50, height/2+50);
+      yFungi = generateRandomY();
+      xFungi = random(50, windowWidth - 50);
       //let yFungi = yScaleFungi(fungi);
       //let s = data[i].Connection * 0.9;
       let s = strokeScale(data[i].Connection);
       let c = cScale(modules);
-     
 
       v1 = createVector(xPlant, yPlant);
       v2 = createVector(xFungi, yFungi);
@@ -217,21 +238,12 @@ function setup() {
 
       systems.push(ps);
     }
+    console.log("systems!", systems.length);
   });
-
-  noStroke();
-}
-
-function generateRandomY(){
-  yFungi = random(50,height-50);
-  if (yFungi > height/2-50 && yFungi < height/2+50) {
-    yFungi= generateRandomY(); // recursively generate another random y value
-  }
-  return yFungi;
 }
 
 function draw() {
-  background(0,20);
+  background(0, 20);
 
   for (let i = 0; i < data.length; i++) {
     if (data[i].Module == currentImage) {
@@ -244,16 +256,16 @@ function draw() {
       }
       if (data[i].Function == "EcM") {
         n = 1;
-      } 
+      }
       if (frameCount % n == 0) {
-       // systems[i].addParticle();
-       systems[i].addParticle();
+        // systems[i].addParticle();
+        systems[i].addParticle();
       }
     }
   }
 
   for (let i = 0; i < systems.length; i++) {
-    if(systems[i].module == currentImage){
+    if (systems[i].module == currentImage) {
       systems[i].run();
     }
   }
@@ -271,15 +283,14 @@ function draw() {
 
     stroke(255);
     noFill();
-    ellipse(xPlant, yPlant,1);
+    ellipse(xPlant, yPlant, 1);
 
     if (modules == currentImage) {
       fill(255);
-      ellipse(xPlant, yPlant,10);
+      ellipse(xPlant, yPlant, 10);
     }
   }
 }
-
 
 class ParticleSystem {
   constructor(v1, v2, s, c, modules) {
@@ -288,24 +299,21 @@ class ParticleSystem {
     this.particles = [];
     this.stroke = s;
     this.color = c;
-    this.module = modules
+    this.module = modules;
   }
 
-
-deleteParticles(){
-  this.particles=[]
-}
+  deleteParticles() {
+    this.particles = [];
+  }
 
   addParticle() {
-    let p = new Particle(this.end, this.start, this.stroke, this.color,this.module);
+    let p = new Particle(this.end, this.start, this.stroke, this.color, this.module);
     this.particles.push(p);
 
     fill(this.color);
     ellipse(this.start.x, this.start.y, 3);
-
   }
   run() {
-
     fill(this.color);
     ellipse(this.start.x, this.start.y, 3);
 
@@ -317,12 +325,16 @@ deleteParticles(){
       if (p.isDead()) {
         this.particles.splice(i, 1);
       }
+
+      if (p.hasReachedEnd()) {
+        this.particles.splice(i, 1);
+      }
     }
   }
 }
 
 class Particle {
-  constructor(v1, v2, s, c,modules) {
+  constructor(v1, v2, s, c, modules) {
     this.start = v2;
     this.end = v1;
     this.maxSpeed = 1;
@@ -339,7 +351,8 @@ class Particle {
     this.n = 3;
     let distance = dist(this.start.x, this.start.y, this.end.x, this.end.y);
     this.weg = this.n / distance;
-    this.module = modules
+    this.module = modules;
+    this.hasReached = false;
 
     //console.log(this.weg);
   }
@@ -361,24 +374,32 @@ class Particle {
     this.pos.x += theta;
 
     this.pos.add(this.vel);
+    let dist = p5.Vector.sub(this.end, this.pos);
+    if (dist.mag() < 0.5) {
+      this.hasReached = true;
+    }
 
     this.lifespan = this.lifespan - 1;
   }
 
   display() {
     fill(this.color);
-   
+
     noStroke();
     ellipse(this.pos.x, this.pos.y, this.stroke);
   }
 
   isDead() {
-    return  this.module !== currentImage;
-}
+    return this.module !== currentImage;
+  }
+
+  hasReachedEnd() {
+    return this.hasReached;
+  }
 }
 
 function keyPressed() {
   if (key == "s") {
     saveCanvas("fungi", "png");
   }
- }
+}
