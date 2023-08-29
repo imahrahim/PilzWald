@@ -197,7 +197,7 @@ function generateSystems() {
     yScalePlant = d3
       .scalePoint()
       .domain(plants)
-      .range([100, windowWidth - 100]);
+      .range([150, windowWidth - 150]);
     yScaleFungi = d3
       .scalePoint()
       .domain(fungis)
